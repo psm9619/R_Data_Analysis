@@ -32,6 +32,11 @@ toyota <- mpg %>%
   summarise (average = mean(cty, na.rm=T)) ; toyota
 higher (audi, toyota)
 
+## corrected ##############################################
+mpg %>%
+  filter(manufacturer %in% c('audi', 'toyota')) %>%
+  group_by (manufacturer) %>%
+  summarise (average=mean(cty))
 
 #3
 avg_hwy <- mpg %>%
@@ -48,6 +53,15 @@ suv <- part_mpg %>%
 compact <- part_mpg %>%
   filter(class == 'compact') %>%
   summarise(average = mean(cty, na.rm=T)) ; compact
+
+#####################################33
+part_mpg %>%
+  filter(class %ni% c('suv', 'compact')) %>%
+  group_by(class)
+  summarise(average = mean(cty, na.rm=T)) ; compact
+
+
+
 
 #6
 audi_5 <- mpg %>%
