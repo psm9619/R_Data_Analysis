@@ -10,10 +10,20 @@ while (number <5){
 
 
 # java 등에서는 for (i = 초기값 ; i<= 끝값; i+2) 식으로 for 반복문 사용
-# R 에서는 for (i in a:b:c) -> a 초기값부터 b 끝값까지 c 씩 증가/감소 해라
+# R 에서는 for (i in a:b) -> a 초기값부터 b 끝값까지 1씩 증가/감소 (만일 a 가 더 큰 값이면 알아서 감소함) 해라
 for (i in 1:10) {
   print (i)
 }
+### i in seq (a, b, c) -> a 에서부터 b까지 c씩 뛰어라
+for (i in seq(3,100,3)){
+  sum <- sum + i
+}
+print(sum)
+### i in c(a,b,c,d,e...) -> c() 벡터안의 데이터들을 하나씩 대입 (순차 순 아니어도 됨)
+for (i in c(5,3,2, 4)) {
+  print (i)
+}
+
 
 sum <- 0
 for (i in 1:100){
@@ -70,6 +80,8 @@ for (i in 5:1) {
   }
   print (line)
 }
+
+
 ###########################################################################
 for (i in 1:10){
   line <- ''
