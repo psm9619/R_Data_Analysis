@@ -101,7 +101,7 @@ compact_count <- mpg%>%
   arrange(desc(cpt_number))  ; compact_count 
 
 
-
+rm(list=ls())
 
 
 
