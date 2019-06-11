@@ -33,8 +33,8 @@ ggplot(midwest_1, aes(x=poptotal, y=popasian)) +
 ## 3.
 mpg
 suv <- mpg %>%
-  group_by(manufacturer)  %>%
   filter (class == 'suv') %>%
+  group_by(manufacturer)  %>%
   summarise (mean_cty = mean(cty)) %>%
   arrange(desc(mean_cty)) %>%
   head(5)
