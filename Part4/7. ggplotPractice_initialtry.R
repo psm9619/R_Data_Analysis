@@ -1,3 +1,6 @@
+install.packages("dplyr")
+install.packages("ggplot2")
+install.packages("sqldf")
 library (ggplot2)
 library (dplyr)
 mpg
@@ -11,7 +14,6 @@ ggplot(mpg, aes(x=cty, y=hwy)) +
   theme(panel.grid.major.x = element_line(colour='grey'),
         panel.grid.major.y = element_line(colour='grey'),
         panel.grid.minor.x = element_blank())
-
 
 #--------------------------------------------------------------------------
 ## 2.
@@ -84,12 +86,13 @@ ggplot (economics, aes(x=date, y=psavert)) +
 #--------------------------------------------------------------------------
 ## 6.  
 
+diamonds
+
+install.packages("grid")
+install.packages("gridExtra")
 
 
-
-
-
-
+library(gridExtra)
 
 
 
