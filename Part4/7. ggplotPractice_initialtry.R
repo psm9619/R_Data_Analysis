@@ -88,10 +88,11 @@ ggplot (economics, aes(x=date, y=psavert)) +
 
 diamonds
 
+install.packages("grid")
+install.packages("gridExtra")
 
 
-
-
+library(gridExtra)
 
 
 

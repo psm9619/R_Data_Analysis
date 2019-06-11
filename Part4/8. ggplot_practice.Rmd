@@ -134,17 +134,46 @@ ggplot(df_3class, aes(x=class, y=cty, fill=class)) +
 
 #### 7. Diamonds 데이터 셋을 이용하여 다음 문제를 해결하세요. 단, 컬러, 제목, x축, y축 등 그래프를 예쁘게 작성하세요.
 
-#### 1) cut의 돗수를 보여주는 그래프를 작성하세요.
-#### 2) cut에 따른 가격의 변화를 보여주는 그래프를 작성하세요. 
-#### 3) cut과 color에 따른 가격의 변화를 보여주는 그래프를 작성하세요.
-
+#### 1) cut의 돗수를 보여주는 그래프를 작성하세요. <br>
 
 
 ```{r diamonds}
-ggplot(diamonds, aes(x=cut, y=clarity)) +
-  geom_col(colour='coral', alpha=0.3) + 
+ggplot(diamonds, aes(x=cut, y=clarity, fill=cut)) +
+  geom_col() + 
   theme_bw()
 
+```
+
+<br>
+#### 2) cut에 따른 가격의 변화를 보여주는 그래프를 작성하세요. <br>
+```{r}
+dia1 <-diamonds %>%
+  group_by (cut) %>%
+  summarise(mean_price = mean(price))
+ggplot(dia1, aes(x=cut, y=mean_price, fill=cut)) + 
+  geom_col()
+```
+
+<br>
+#### 3) cut과 color에 따른 가격의 변화를 보여주는 그래프를 작성하세요.
+
+*     It simply means overlap the graphs which show the change of price, one against cut and the other against color. 
+*     Overlapping two graphs can be made by grid.arrange(A graph,B graph, ncol=2, top = 'title') <- ncol=2 because two graphs are compared.
+
+<br>
+```{r}
+# dia1 is from above, 7-2 problem.
+
+dia2 <-diamonds %>%
+  group_by (color) %>%
+  summarise(mean_price = mean(price))
+g1 <- ggplot(dia1, aes(x=cut, y=mean_price, fill=cut)) + 
+  geom_col()
+g2 <- ggplot(dia2, aes(x=color, y=mean_price, fill=color)) +
+  geom_col()
+install.packages("gridExtra")
+library(gridExtra)
+grid.arrange(g1, g2, ncol=2, top = )
 ```
 
 
