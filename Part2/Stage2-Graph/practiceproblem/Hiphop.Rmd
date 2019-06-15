@@ -1,0 +1,95 @@
+---
+title: "Hiphop"
+author: "Soomin Park"
+date: '2019 6 12 '
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r}
+
+
+
+library (KoNLP) ; library(tm) ; useSejongDic()
+library(stringr) ; library(dplyr)
+library(wordcloud) ; library(ggplot2) ; library(RColorBrewer)
+library(extrafont) ; windowsFonts()
+options(digits = 2)  ### 소수점 이하 두 자리까지만 표기
+
+txt <- readLines("hiphop.txt")
+# txt <- gsub(" ", "-", txt)
+# txt <- str_split(txt, "-")
+txt <- str_replace_all(unlist(txt),"[^:alpha:]]", "")
+
+txt_nouns <- sapply(txt, extractNoun, USE.NAMES = F) 
+txt_nouns <- unlist(txt_nouns) 
+
+###
+txt_nouns[300:400]
+
+#--------------------------------------------------------------
+
+txt_nouns <- Filter(function(x) {nchar(x)>=2}, txt_nouns)
+# txt_nouns[1:100] ; txt_nouns[405:700]
+txt_nouns <- toupper(txt_nouns)
+txt_nouns[300:400]
+
+gsub_txt <- c("받\\S*", "겠\\S*", "않\\S*", "처럼\\S*", "면\\S*", 
+              "었\\S*", "을\\S*", "까\\S*", "길\\S*", " ","따\\S*", "\\d+","[:punct:]",'[ㄱ-ㅎ]',"(ㅜ|ㅠ)") 
+for (i in 1:length(gsub_txt)) {
+  txt_nouns <- gsub(gsub_txt[i], "", txt_nouns)
+} 
+
+txt_nouns <- Filter(function(x) {nchar(x)>=2}, txt_nouns)
+
+#--------------------------------------------------------------
+
+write(txt_nouns, "rev_hiphop.txt")
+rev <- read.table("rev_hiphop.txt")
+
+nrow(rev) ; class(rev)
+counts <- table(rev)
+
+palete <- brewer.pal(10, "Spectral")
+
+set.seed(123)
+par(bg="black")
+wordcloud(names(counts), freq = counts, scale = c(4,0.5),
+          rot.per=0.25, min.freq=10, max.words=100, 
+          random.order=F, random.color=T, colors=palete)
+
+#--------------------------------------------------------------
+
+
+top10 <- head(sort(counts, decreasing=T), 10) ; class(top10)
+top10 <- as.data.frame(top10)
+ 
+top10_2 <- top10 %>%
+  mutate(pct= Freq / sum(Freq) * 100) %>%
+  mutate (ylabel = paste(sprintf("%4.1f", pct), '%', sep = '')) %>%
+  arrange(desc(rev)) %>%
+  mutate(ypos = cumsum(pct)- 0.5*pct)
+top10_2
+
+## ------------------------------------------------------
+
+ggplot (top10_2, aes(x=rev, y=pct, fill=rev)) + 
+  geom_bar (width=0.8, stat="identity") +
+  labs(x="Words", y="Percentage (%)", title="Top 10 words in K-HipHop songs")
+
+## ------------------------------------------------------
+
+row.names(top10_2) <- top10_2$rev
+
+top10_2
+ggplot (top10_2, aes(x='', y=pct, fill = rev)) + 
+  geom_bar(width=1, stat='identity') +
+  geom_text(aes(y=ypos, label = paste(row.names(top10), "\n",ylabel)), color='white') +
+  coord_polar("y", start=0) +
+  labs(title="Top 10 words in K-HipHop songs")
+
+
+```
+

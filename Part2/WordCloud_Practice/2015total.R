@@ -1,0 +1,76 @@
+library(dplyr)
+library(KoNLP)
+library(wordcloud)
+library(stringr)
+library(RColorBrewer)
+useSejongDic()
+
+
+
+tot <- c(readLines("응답소_2015_01.txt"),
+         readLines("응답소_2015_02.txt"),
+         readLines("응답소_2015_03.txt"),
+         readLines("응답소_2015_04.txt"),
+         readLines("응답소_2015_05.txt"),
+         readLines("응답소_2015_06.txt"),
+         readLines("응답소_2015_07.txt"),
+         readLines("응답소_2015_08.txt"),
+         readLines("응답소_2015_09.txt"),
+         readLines("응답소_2015_10.txt"),
+         readLines("응답소_2015_11.txt"),
+         readLines("응답소_2015_12.txt"))
+total <- sapply(tot, extractNoun, USE.NAMES = F)
+total <- unlist(total)
+total <- str_replace_all(total, "[^:alpha:]]","")
+
+
+t_gsub <- readLines("응답소gsub.txt")  
+
+t_gsub <- readLines("응답소gsub.txt")  
+
+re_subtxt <- c(t_gsub, "\\W", "\\d+","[:punct:]",'[ㄱ-ㅎ]',"(ㅜ|ㅠ)","제목","답변","씨\\S*","서울시\\S*","시장\\S*","을\\S*","까\\S*","되\\S*","당시\\S*","관련\\S*","에\\S*","를\\S*","년\\S*","그런\\S*","그래서\\S*","것\\S*","갖\\S*","아니\\S*", "랑\\S*", "안녕\\S*", "입니다", "생각", "는\\S*", "서울\\S*", "seo\\S*" , "나라\\S*", "민원\\S*", "백사마\\S*", "존경\\S*", "없\\S*", "제발\\S*", "께\\S*","진짜\\S*", "저희\\S*", "와\\S*", "전국\\S*", "이런\\S*", "응답소\\S*", "더이상\\S*", "당분간\\S*")
+
+write (re_subtxt, "resub.txt")
+resub <- readLines("resub.txt")
+
+for (i in 1:length(resub)) {
+    total <- gsub(resub[i], "", total)
+}
+
+total <- gsub ("동성애\\S*", "퀴어", total)
+total <- gsub ("퀴어\\S*", "퀴어", total)
+total <- gsub ("게이\\S*", "퀴어", total)
+
+total <- Filter(function(x) {nchar(x) >=2 && nchar(x) <=5}, total)
+
+write(unlist(total), "tot15_rev.txt")
+revT <- read.table("tot15_rev.txt")
+nrow(revT)
+countT <- table(revT)
+palete <- brewer.pal(10, "Set3")
+
+par(bg="black")
+wordcloud(names(countT), freq = countT, scale = c(4,0.5),
+          rot.per=0.35, min.freq=10, max.words=100, 
+          random.order=F, random.color=T, colors=palete)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
