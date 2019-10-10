@@ -1,6 +1,7 @@
-# Data Analysis with R (05.29 ~ 06.15.2019)
+# Data Analysis with R 
 ## 교재: 더많이 R라뷰 (R을 활용한 데이터 분석 입문편) 
 ### 저자: 서진수 (도서출판)
+05.29 ~ 06.15.2019
 <br>
 
 #### Part 2. [실전 예제](https://github.com/psm9619/R_Data_Analysis/tree/master/Part2)
